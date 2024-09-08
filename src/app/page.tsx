@@ -11,7 +11,7 @@ export default function Home() {
     <div className="items-center justify-items-center min-h-screen pt-20 p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <div className="list-inside list-decimal text-sm flex w-full flex-col align-center text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <h1 className="text-xl font-bold mb-8 text-center">beatmatch.fm</h1>
+          <h1 className="text-2xl font-bold mb-8 text-center">beatmatch.in</h1>
           <div className="mb-2 text-center">
             Calculate PITCH ADJ value based on track BPMs{" "}
           </div>
