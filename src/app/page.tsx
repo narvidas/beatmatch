@@ -45,7 +45,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="fixed bottom-0 w-full bg-transparent text-slate-100 flex flex-col gap-6 items-center justify-center p-4">
+      <footer className="fixed bottom-0 w-full bg-transparent text-slate-100 opacity-50 flex flex-col gap-2 items-center justify-center p-4">
         <div className="flex text-sm items-center gap-1">
           © {new Date().getFullYear()}
           <a
@@ -57,7 +57,7 @@ export default function Home() {
             {`Mark Narvidas`}
           </a>
         </div>
-        <div className="flex text-xs text-slate-300 items-center gap-1">
+        <div className="flex text-xs text-slate-100 items-center gap-1 opacity-70">
           Special thanks to
           <a
             href="https://www.reddit.com/r/Beatmatch/comments/r1qy8j/the_beatmatching_formula_pitch_adjustment_a_b_b/"
