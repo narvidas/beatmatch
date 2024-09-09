@@ -13,12 +13,14 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("pitchAdj");
   const [bpm, setBpm] = useState<number | null>(null);
   const [taps, setTaps] = useState<number[]>([]);
+  const [isStale, setIsStale] = useState(false);
   const lastTapTime = useRef<number | null>(null);
   const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const resetTaps = useCallback(() => {
     setTaps([]);
     lastTapTime.current = null;
+    setIsStale(true);
   }, []);
 
   const handleTap = useCallback(() => {
@@ -27,6 +29,8 @@ export default function Home() {
     if (resetTimeoutRef.current) {
       clearTimeout(resetTimeoutRef.current);
     }
+
+    setIsStale(false);
 
     if (lastTapTime.current) {
       const newTaps = [...taps, now - lastTapTime.current];
@@ -40,7 +44,7 @@ export default function Home() {
     }
     lastTapTime.current = now;
 
-    resetTimeoutRef.current = setTimeout(resetTaps, 3000);
+    resetTimeoutRef.current = setTimeout(resetTaps, 2200);
   }, [taps, resetTaps]);
 
   useEffect(() => {
@@ -104,7 +108,13 @@ export default function Home() {
             {activeTab === "bpm" && (
               <div className="text-center flex flex-col items-center">
                 <p className="text-sm mb-24 font-[family-name:var(--font-geist-mono)]">Tap the button to find BPM</p>
-                <div className="text-2xl font-bold mb-12">{bpm ? `${bpm} BPM` : "-- BPM"}</div>
+                <div
+                  className={`text-2xl font-bold mb-10 transition-colors duration-300 ${
+                    isStale ? "text-gray-500" : ""
+                  }`}
+                >
+                  {bpm ? `${bpm} BPM` : "-- BPM"}
+                </div>
                 <button
                   className="w-24 h-24 rounded-full bg-white text-black font-bold shadow-lg hover:shadow-xl transition-shadow"
                   onClick={handleTap}
