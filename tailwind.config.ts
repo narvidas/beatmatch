@@ -12,6 +12,21 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      animation: {
+        ripple: "ripple 0.2s ease-out",
+      },
+      keyframes: {
+        ripple: {
+          "0%": {
+            transform: "scale(0)",
+            opacity: "0.1",
+          },
+          "100%": {
+            transform: "scale(3)",
+            opacity: "0",
+          },
+        },
+      },
     },
   },
   plugins: [],

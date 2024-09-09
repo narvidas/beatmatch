@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Coffee } from "@/components/coffee/Coffee";
 import { InlinePicker } from "@/components/picker/Picker";
 import { usePersistedState } from "@/hooks/usePersistedState";
+import { Tap } from "@/components/tap/Tap";
 
 type Tab = "pitchAdj" | "bpm";
 
@@ -44,7 +45,7 @@ export default function Home() {
     }
     lastTapTime.current = now;
 
-    resetTimeoutRef.current = setTimeout(resetTaps, 2200);
+    resetTimeoutRef.current = setTimeout(resetTaps, 1800);
   }, [taps, resetTaps]);
 
   useEffect(() => {
@@ -115,12 +116,7 @@ export default function Home() {
                 >
                   {bpm ? `${bpm} BPM` : "-- BPM"}
                 </div>
-                <button
-                  className="w-24 h-24 rounded-full bg-white text-black font-bold shadow-lg hover:shadow-xl transition-shadow"
-                  onClick={handleTap}
-                >
-                  TAP
-                </button>
+                <Tap onClick={handleTap}>TAP</Tap>
               </div>
             )}
           </div>

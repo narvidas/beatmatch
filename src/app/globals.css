@@ -37,3 +37,9 @@ body {
   height: 100vh;
   overflow: auto;
 }
+
+@layer components {
+  .animate-ripple {
+    animation: ripple 0.5s linear;
+  }
+}
