@@ -1,11 +1,11 @@
 "use client";
 
 import { InlinePicker } from "@/components/picker/Picker";
-import { useState } from "react";
+import { usePersistedState } from "@/hooks/usePersistedState";
 
 export default function Home() {
-  const [bpm1, setBpm1] = useState(128);
-  const [bpm2, setBpm2] = useState(128);
+  const [bpm1, setBpm1] = usePersistedState("beatmatchin-bpm1", 128);
+  const [bpm2, setBpm2] = usePersistedState("beatmatchin-bpm2", 128);
 
   return (
     <div className="flex flex-col items-center justify-items-center h-screen overflow-hidden p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
@@ -23,13 +23,13 @@ export default function Home() {
             <div>
               <div className="text-center">Track 1</div>
               <div className="h-40 overflow-y-scroll no-scrollbar">
-                <InlinePicker onNewBpm={setBpm1} />
+                <InlinePicker onNewBpm={setBpm1} defaultBpm={bpm1} />
               </div>
             </div>
             <div>
               <div className="text-center">Track 2</div>
               <div className="h-40 overflow-y-scroll no-scrollbar">
-                <InlinePicker onNewBpm={setBpm2} />
+                <InlinePicker onNewBpm={setBpm2} defaultBpm={bpm2} />
               </div>
             </div>
           </div>

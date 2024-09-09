@@ -20,11 +20,22 @@ function renderOptions(options: string[], selectedColor: string) {
 const bpmValues = Array.from({ length: 161 }, (_, i) => i + 40).map(String);
 
 type InlinePickerProps = {
+  defaultBpm?: number;
   onNewBpm: (newBpm: number) => void;
 };
 
-export const InlinePicker: FC<InlinePickerProps> = ({ onNewBpm }) => {
-  const [bpm, setBpm] = useState({ value: "128" });
+export const InlinePicker: FC<InlinePickerProps> = ({
+  onNewBpm,
+  defaultBpm,
+}) => {
+  const defaultValue = defaultBpm ? String(defaultBpm) : "128";
+  const [bpm, setBpm] = useState({ value: defaultValue });
+
+  useEffect(() => {
+    if (defaultBpm) {
+      setBpm({ value: String(defaultBpm) });
+    }
+  }, [defaultBpm]);
 
   const pickerRef = useRef<HTMLDivElement>(null);
 
@@ -50,6 +61,7 @@ export const InlinePicker: FC<InlinePickerProps> = ({ onNewBpm }) => {
     <div ref={pickerRef}>
       <Picker
         className="px-4"
+        height={120}
         value={bpm}
         onChange={(newBpm) => {
           setBpm(newBpm);
