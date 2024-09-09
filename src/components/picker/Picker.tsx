@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Picker from "react-mobile-picker";
 
 function renderOptions(options: string[], selectedColor: string) {
@@ -25,19 +25,42 @@ type InlinePickerProps = {
 
 export const InlinePicker: FC<InlinePickerProps> = ({ onNewBpm }) => {
   const [bpm, setBpm] = useState({ value: "128" });
+
+  const pickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleTouchMove = (event: TouchEvent) => {
+      // Prevent the page from scrolling while interacting with the picker
+      if (
+        pickerRef.current &&
+        pickerRef.current.contains(event.target as Node)
+      ) {
+        event.stopPropagation();
+      }
+    };
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, []);
+
   return (
-    <Picker
-      className="px-4"
-      value={bpm}
-      onChange={(newBpm) => {
-        setBpm(newBpm);
-        onNewBpm && onNewBpm(Number(newBpm.value));
-      }}
-      wheelMode="normal"
-    >
-      <Picker.Column name="value">
-        {renderOptions(bpmValues, "text-white")}
-      </Picker.Column>
-    </Picker>
+    <div ref={pickerRef}>
+      <Picker
+        className="px-4"
+        value={bpm}
+        onChange={(newBpm) => {
+          setBpm(newBpm);
+          onNewBpm && onNewBpm(Number(newBpm.value));
+        }}
+        wheelMode="normal"
+      >
+        <Picker.Column name="value">
+          {renderOptions(bpmValues, "text-white")}
+        </Picker.Column>
+      </Picker>
+    </div>
   );
 };
