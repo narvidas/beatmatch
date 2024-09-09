@@ -11,9 +11,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-items-center h-screen overflow-hidden p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start flex-grow">
         <div className="list-inside list-decimal text-sm flex w-full flex-col align-center text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <h1 className="text-2xl font-bold mb-6 mt-10 text-center">
-            beatmatch.in
-          </h1>
+          <h1 className="text-2xl font-bold mb-8 text-center">beatmatch.in</h1>
           <div className="mb-2 text-center">
             Calculate PITCH ADJ value based on track BPMs{" "}
           </div>
@@ -22,11 +20,15 @@ export default function Home() {
           <div className="flex flex-row gap-20">
             <div>
               <div className="text-center">Track 1</div>
-              <InlinePicker onNewBpm={setBpm1} />
+              <div className="h-40 overflow-y-scroll no-scrollbar">
+                <InlinePicker onNewBpm={setBpm1} />
+              </div>
             </div>
             <div>
               <div className="text-center">Track 2</div>
-              <InlinePicker onNewBpm={setBpm2} />
+              <div className="h-40 overflow-y-scroll no-scrollbar">
+                <InlinePicker onNewBpm={setBpm2} />
+              </div>
             </div>
           </div>
         </div>
@@ -41,7 +43,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="fixed mb-4 bottom-0 w-full bg-transparent text-slate-100 flex flex-col gap-2 items-center justify-center p-2">
+      <footer className="fixed bottom-0 w-full bg-transparent text-slate-100 flex flex-col gap-6 items-center justify-center p-4">
         <div className="flex text-sm items-center gap-1">
           © {new Date().getFullYear()}
           <a
