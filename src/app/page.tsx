@@ -8,10 +8,12 @@ export default function Home() {
   const [bpm2, setBpm2] = useState(128);
 
   return (
-    <div className="items-center justify-items-center min-h-screen pt-20 p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="flex flex-col items-center justify-items-center h-screen overflow-hidden p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start flex-grow">
         <div className="list-inside list-decimal text-sm flex w-full flex-col align-center text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <h1 className="text-2xl font-bold mb-8 text-center">beatmatch.in</h1>
+          <h1 className="text-2xl font-bold mb-6 mt-10 text-center">
+            beatmatch.in
+          </h1>
           <div className="mb-2 text-center">
             Calculate PITCH ADJ value based on track BPMs{" "}
           </div>
@@ -39,7 +41,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="row-start-3 text-slate-100 mt-32 flex flex-col gap-6 items-center justify-center">
+      <footer className="fixed mb-4 bottom-0 w-full bg-transparent text-slate-100 flex flex-col gap-2 items-center justify-center p-2">
         <div className="flex text-sm items-center gap-1">
           © {new Date().getFullYear()}
           <a
