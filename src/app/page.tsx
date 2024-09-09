@@ -1,5 +1,6 @@
 "use client";
 
+import { Coffee } from "@/components/coffee/Coffee";
 import { InlinePicker } from "@/components/picker/Picker";
 import { usePersistedState } from "@/hooks/usePersistedState";
 
@@ -46,7 +47,8 @@ export default function Home() {
         </div>
       </main>
       <footer className="fixed bottom-0 w-full bg-transparent text-slate-100 opacity-50 flex flex-col gap-2 items-center justify-center p-4">
-        <div className="flex text-sm items-center gap-1">
+        <Coffee />
+        <div className="flex text-sm gap-1">
           © {new Date().getFullYear()}
           <a
             className="flex items-center text-center text-sm gap-2 hover:underline hover:underline-offset-4"
@@ -67,7 +69,7 @@ export default function Home() {
           >
             this
           </a>
-          reddit post for the idea.
+          reddit post for the idea
         </div>
       </footer>
     </div>
