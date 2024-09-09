@@ -1,14 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Coffee } from "@/components/coffee/Coffee";
 import { InlinePicker } from "@/components/picker/Picker";
 import { usePersistedState } from "@/hooks/usePersistedState";
 
+type Tab = "pitchAdj" | "bpm";
+
 export default function Home() {
   const [bpm1, setBpm1] = usePersistedState("beatmatchin-bpm1", 128);
   const [bpm2, setBpm2] = usePersistedState("beatmatchin-bpm2", 128);
-  const [activeTab, setActiveTab] = useState("pitchAdj");
+  const [activeTab, setActiveTab] = useState<Tab>("pitchAdj");
+  const [bpm, setBpm] = useState<number | null>(null);
+  const [taps, setTaps] = useState<number[]>([]);
+  const lastTapTime = useRef<number | null>(null);
+  const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const resetTaps = useCallback(() => {
+    setTaps([]);
+    lastTapTime.current = null;
+  }, []);
+
+  const handleTap = useCallback(() => {
+    const now = Date.now();
+
+    if (resetTimeoutRef.current) {
+      clearTimeout(resetTimeoutRef.current);
+    }
+
+    if (lastTapTime.current) {
+      const newTaps = [...taps, now - lastTapTime.current];
+      setTaps(newTaps);
+
+      if (newTaps.length >= 2) {
+        const avgTimeBetweenTaps = newTaps.reduce((a, b) => a + b, 0) / newTaps.length;
+        const calculatedBpm = Math.round(60000 / avgTimeBetweenTaps);
+        setBpm(calculatedBpm);
+      }
+    }
+    lastTapTime.current = now;
+
+    resetTimeoutRef.current = setTimeout(resetTaps, 3000);
+  }, [taps, resetTaps]);
+
+  useEffect(() => {
+    return () => {
+      if (resetTimeoutRef.current) {
+        clearTimeout(resetTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-items-center h-screen overflow-hidden p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
@@ -23,8 +64,8 @@ export default function Home() {
                 Calculator
               </button>
               <button
-                className={`py-2 px-4 w-40 ${activeTab === "empty" ? "border-b-2 border-slate-500" : "opacity-50"}`}
-                onClick={() => setActiveTab("empty")}
+                className={`py-2 px-4 w-40 ${activeTab === "bpm" ? "border-b-2 border-slate-500" : "opacity-50"}`}
+                onClick={() => setActiveTab("bpm")}
               >
                 Find BPM
               </button>
@@ -32,8 +73,8 @@ export default function Home() {
             {activeTab === "pitchAdj" && (
               <>
                 <div className="list-inside list-decimal text-sm flex w-full flex-col align-center text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-                  <h1 className="text-3xl font-bold mb-8 text-center">Beatmatch Calculator</h1>
-                  <div className="mb-2 text-center">Calculate PITCH ADJ value based on track BPMs </div>
+                  {/* <h1 className="text-3xl font-bold mb-8 text-center">Beatmatch Calculator</h1> */}
+                  <div className="mb-4 text-center">Calculate PITCH ADJ value based on track BPMs </div>
                 </div>
 
                 <div className="flex justify-center items-center w-full mt-8">
@@ -52,7 +93,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="text-center -mt-8">
+                <div className="text-center">
                   <div className="text-center mb-2">Pitch Adjustment Value</div>
                   <div className="text-4xl font-bold text-center">
                     {Math.round((100 * (bpm1 - bpm2)) / (bpm2 * 0.01)) / 100}
@@ -60,11 +101,14 @@ export default function Home() {
                 </div>
               </>
             )}
-            {activeTab === "empty" && (
+            {activeTab === "bpm" && (
               <div className="text-center flex flex-col items-center">
-                <p className="mb-12">Tap the button to find BPM</p>
-                <div className="text-2xl font-bold mb-12">-- BPM</div>
-                <button className="w-24 h-24 rounded-full bg-white text-black font-bold shadow-lg hover:shadow-xl transition-shadow">
+                <p className="text-sm mb-24 font-[family-name:var(--font-geist-mono)]">Tap the button to find BPM</p>
+                <div className="text-2xl font-bold mb-12">{bpm ? `${bpm} BPM` : "-- BPM"}</div>
+                <button
+                  className="w-24 h-24 rounded-full bg-white text-black font-bold shadow-lg hover:shadow-xl transition-shadow"
+                  onClick={handleTap}
+                >
                   TAP
                 </button>
               </div>
@@ -85,18 +129,20 @@ export default function Home() {
             {`Mark Narvidas`}
           </a>
         </div>
-        <div className="flex text-xs text-slate-100 items-center gap-1 opacity-70">
-          Special thanks to
-          <a
-            href="https://www.reddit.com/r/Beatmatch/comments/r1qy8j/the_beatmatching_formula_pitch_adjustment_a_b_b/"
-            target="_blank"
-            className="hover:underline hover:underline-offset-4"
-            rel="noopener noreferrer"
-          >
-            this
-          </a>
-          reddit post for the idea
-        </div>
+        {activeTab === "pitchAdj" && (
+          <div className="flex text-xs text-slate-100 items-center gap-1 opacity-70">
+            Special thanks to
+            <a
+              href="https://www.reddit.com/r/Beatmatch/comments/r1qy8j/the_beatmatching_formula_pitch_adjustment_a_b_b/"
+              target="_blank"
+              className="hover:underline hover:underline-offset-4"
+              rel="noopener noreferrer"
+            >
+              this
+            </a>
+            reddit post for the idea
+          </div>
+        )}
       </footer>
     </div>
   );
