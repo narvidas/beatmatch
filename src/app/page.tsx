@@ -69,7 +69,7 @@ export default function Home() {
                 Calculator
               </button>
               <button
-                className={`py-2 px-4 w-40 ${activeTab === "bpm" ? "border-b-2 border-slate-500" : "opacity-50"}`}
+                className={`py-2 px-4 w-40 ${activeTab === "bpm" ? "border-b-2 border-white-500" : "opacity-50"}`}
                 onClick={() => setActiveTab("bpm")}
               >
                 Find BPM
