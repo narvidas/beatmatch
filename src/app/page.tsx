@@ -115,7 +115,7 @@ export default function Home() {
                     isStale ? "text-gray-500" : ""
                   }`}
                 >
-                  {bpm ? `${bpm.toFixed(showDecimals ? 1 : 0)} BPM` : "-- BPM"}
+                  {bpm ? `${bpm.toFixed(showDecimals ? 1 : 0)} BPM` : `${showDecimals ? "--.-" : "--"} BPM`}
                 </div>
                 <Tap onClick={handleTap}>TAP</Tap>
               </div>
