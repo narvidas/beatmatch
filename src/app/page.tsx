@@ -17,6 +17,7 @@ export default function Home() {
   const [isStale, setIsStale] = useState(false);
   const lastTapTime = useRef<number | null>(null);
   const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [showDecimals, setShowDecimals] = useState(false);
 
   const resetTaps = useCallback(() => {
     setTaps([]);
@@ -39,14 +40,14 @@ export default function Home() {
 
       if (newTaps.length >= 2) {
         const avgTimeBetweenTaps = newTaps.reduce((a, b) => a + b, 0) / newTaps.length;
-        const calculatedBpm = Math.round(60000 / avgTimeBetweenTaps);
-        setBpm(calculatedBpm);
+        const calculatedBpm = 60000 / avgTimeBetweenTaps;
+        setBpm(showDecimals ? Math.round(calculatedBpm * 2) / 2 : Math.round(calculatedBpm));
       }
     }
     lastTapTime.current = now;
 
     resetTimeoutRef.current = setTimeout(resetTaps, 1800);
-  }, [taps, resetTaps]);
+  }, [taps, resetTaps, showDecimals]);
 
   useEffect(() => {
     return () => {
@@ -87,13 +88,13 @@ export default function Home() {
                     <div>
                       <div className="text-center">Track 1</div>
                       <div className="h-40 overflow-y-scroll no-scrollbar">
-                        <InlinePicker onNewBpm={setBpm1} defaultBpm={bpm1} />
+                        <InlinePicker onNewBpm={setBpm1} defaultBpm={bpm1} showDecimals={showDecimals} />
                       </div>
                     </div>
                     <div>
                       <div className="text-center">Track 2</div>
                       <div className="h-40 overflow-y-scroll no-scrollbar">
-                        <InlinePicker onNewBpm={setBpm2} defaultBpm={bpm2} />
+                        <InlinePicker onNewBpm={setBpm2} defaultBpm={bpm2} showDecimals={showDecimals} />
                       </div>
                     </div>
                   </div>
@@ -114,11 +115,17 @@ export default function Home() {
                     isStale ? "text-gray-500" : ""
                   }`}
                 >
-                  {bpm ? `${bpm} BPM` : "-- BPM"}
+                  {bpm ? `${bpm.toFixed(showDecimals ? 1 : 0)} BPM` : "-- BPM"}
                 </div>
                 <Tap onClick={handleTap}>TAP</Tap>
               </div>
             )}
+            <button
+              onClick={() => setShowDecimals(!showDecimals)}
+              className="mt-8 text-xs text-gray-700 hover:text-gray-300 transition-colors duration-300"
+            >
+              {showDecimals ? "Hide decimals" : "Show decimals"}
+            </button>
           </div>
         </div>
       </main>
