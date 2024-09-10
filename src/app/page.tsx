@@ -122,7 +122,7 @@ export default function Home() {
             )}
             <button
               onClick={() => setShowDecimals(!showDecimals)}
-              className="mt-8 text-xs text-gray-700 hover:text-gray-300 transition-colors duration-300"
+              className="mt-8 text-xs text-white opacity-25 hover:opacity-90 transition-opacity duration-300"
             >
               {showDecimals ? "Hide decimals" : "Show decimals"}
             </button>
