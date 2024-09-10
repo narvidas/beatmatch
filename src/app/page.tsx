@@ -41,7 +41,7 @@ export default function Home() {
       if (newTaps.length >= 2) {
         const avgTimeBetweenTaps = newTaps.reduce((a, b) => a + b, 0) / newTaps.length;
         const calculatedBpm = 60000 / avgTimeBetweenTaps;
-        setBpm(showDecimals ? Math.round(calculatedBpm * 2) / 2 : Math.round(calculatedBpm));
+        setBpm(showDecimals ? Math.round(calculatedBpm * 10) / 10 : Math.round(calculatedBpm));
       }
     }
     lastTapTime.current = now;
